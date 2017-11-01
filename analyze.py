@@ -315,13 +315,16 @@ if __name__ == '__main__':
     args = p.parse_args()
     [user_id] = args.user_id
 
-    consumer_key = (os.environ.get('CONSUMER_KEY') or
+    consumer_key = (os.environ.get('TWITTER_CONSUMER_KEY') or
                     raw_input('Enter your consumer key: '))
 
-    consumer_secret = (os.environ.get('CONSUMER_SECRET') or
+    consumer_secret = (os.environ.get('TWITTER_CONSUMER_SECRET') or
                        raw_input('Enter your consumer secret: '))
 
-    tok, tok_secret = get_access_token(consumer_key, consumer_secret)
+    tok = os.environ.get('TWITTER_ACCESS_TOKEN')
+    tok_secret = os.environ.get('TWITTER_ACCESS_TOKEN_SECRET')
+    if (not tok or not tok_secret):
+      tok, tok_secret = get_access_token(consumer_key, consumer_secret)
 
     if args.self:
         print(analyze_self(user_id, consumer_key, consumer_secret,
